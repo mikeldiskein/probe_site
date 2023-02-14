@@ -1,0 +1,25 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Authors</h1>
+    {% if authors %}
+    <ul>
+        {% for author in authors %}
+        <li>
+            <a href="{{ author.get_absolute_url }}">{{ author.last_name }}, {{ author.first_name }} </a> 
+            {% if author.date_of_birth and author.date_of_death %}
+                ({{ author.date_of_birth }}, {{ author.date_of_birth }})
+            {% endif %}
+        </li>
+        {% endfor %} 
+    </ul>
+    {% else %}
+        <p>There are no authors in the library.</p>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        {% if perms.catalog.can_mark_returned %}
+            <li><a href="{% url 'author-create' %}">Add new author</a></li>
+        {% endif %}    
+    {% endif %}
+{% endblock %}
